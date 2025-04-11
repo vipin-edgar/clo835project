@@ -18,6 +18,8 @@ DBPWD = os.environ.get("DBPWD") or "passwors"
 DATABASE = os.environ.get("DATABASE") or "employees"
 COLOR_FROM_ENV = os.environ.get('APP_COLOR') or "lime"
 DBPORT = int(os.environ.get("DBPORT"))
+YOUR_NAME = os.getenv("YOUR_NAME")
+
 
 BACKGROUND_IMAGE_URL = os.getenv("BACKGROUND_IMAGE_URL")
 AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID")
@@ -88,11 +90,11 @@ download_background_image()
 
 @app.route("/", methods=['GET', 'POST'])
 def home():
-    return render_template('addemp.html', color=color_codes[COLOR], group=GROUP_NAME, slogan=GROUP_SLOGAN)
+    return render_template('addemp.html', color=color_codes[COLOR], group=GROUP_NAME, slogan=GROUP_SLOGAN,name=YOUR_NAME)
 
 @app.route("/about", methods=['GET','POST'])
 def about():
-    return render_template('about.html', color=color_codes[COLOR])
+    return render_template('about.html', color=color_codes[COLOR],your_name=YOUR_NAME)
     
 @app.route("/addemp", methods=['POST'])
 def AddEmp():
