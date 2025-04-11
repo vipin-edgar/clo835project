@@ -4,8 +4,8 @@ metadata:
   name: app-config
   namespace: final
 data:
-  GROUP_NAME: "groupname"
-  GROUP_SLOGAN: "slogan"
+  GROUP_NAME: "Apex 911"
+  GROUP_SLOGAN: "Born To Break Limits"
   BACKGROUND_IMAGE_URL: "https://assignment3vipin.s3.us-east-1.amazonaws.com/richard-horvath-_nWaeTF6qo0-unsplash.jpg"
   S3_BUCKET_NAME: "assignment3vipin"
   AWS_REGION: "us-east-1"
