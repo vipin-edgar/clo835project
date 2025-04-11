@@ -13,6 +13,8 @@ spec:
       labels:
         app: mysql
     spec:
+      imagePullSecrets:
+        - name: ecr-secret
       containers:
       - name: mysql
         image: 011926502057.dkr.ecr.us-east-1.amazonaws.com/vipin/my_db:latest
