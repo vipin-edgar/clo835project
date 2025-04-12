@@ -1,0 +1,41 @@
+name: Build and Push Docker Images
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📦 Checkout Source Code
+        uses: actions/checkout@v2
+
+      - name: 🔐 Set up AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
+          aws-region: us-east-1
+
+      - name: 🔐 Login to Amazon ECR
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: 🐳 Build MySQL Docker Image
+        run: |
+          docker build -t my_db -f Dockerfile_mysql .
+          docker tag my_db:latest 011926502057.dkr.ecr.us-east-1.amazonaws.com/vipin/my_db:latest
+
+      - name: 🐳 Build Flask App Docker Image
+        run: |
+          docker build -t my_app -f Dockerfile .
+          docker tag my_app:latest 011926502057.dkr.ecr.us-east-1.amazonaws.com/vipin/my_app:latest
+
+      - name: 🚀 Push Docker Images to ECR
+        run: |
+          docker push 011926502057.dkr.ecr.us-east-1.amazonaws.com/vipin/my_db:latest
+          docker push 011926502057.dkr.ecr.us-east-1.amazonaws.com/vipin/my_app:latest
+

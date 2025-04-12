@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flask-app
+  namespace: final
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: flask-app
+  template:
+    metadata:
+      labels:
+        app: flask-app
+    spec:
+      serviceAccountName: clo835
+      containers:
+        - name: flask-container
+          image: 011926502057.dkr.ecr.us-east-1.amazonaws.com/vipin/my_app:latest
+          ports:
+            - containerPort: 81
+          env:
+            - name: GROUP_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: group_name
+            - name: GROUP_SLOGAN
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: group_slogan
+            - name: BACKGROUND_IMAGE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: background_image_url
+            - name: MYSQL_USER
+              valueFrom:
+                secretKeyRef:
+                  name: db-secrets
+                  key: username
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: db-secrets
+                  key: password
+            - name: AWS_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: aws-creds
+                  key: aws_access_key_id
+            - name: AWS_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: aws-creds
+                  key: aws_secret_access_key
+          volumeMounts:
+            - name: image-storage
+              mountPath: /app/static/images
+      volumes:
+        - name: image-storage
+          emptyDir: {}
